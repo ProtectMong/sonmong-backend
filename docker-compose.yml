@@ -1,0 +1,18 @@
+version: '3.9'
+
+services:
+  mariadb:
+    container_name: mariadb
+    image: mariadb:11.3.2
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_HOST=${MARIADB_ROOT_HOST}
+
+volumes:
+  db_data:
