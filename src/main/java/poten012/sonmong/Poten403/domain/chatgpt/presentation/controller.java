@@ -18,33 +18,9 @@ public class controller {
     @Autowired
     private ChatGPTFacade chatGPTFacade;
 
-    /**
-     * [API] ChatGPT 모델 리스트 조회
-     */
-    @GetMapping("/modelList")
-    public ResponseEntity<ApiResponse> selectModelList() {
-        val result = chatGPTFacade.selectModelList();
-        return ResponseEntity.ok(ApiResponse.success(ResponseMessage.SUCCESS_GET_MODEL_LIST.getMessage(), result));
-    }
-
-    /**
-     * [API] ChatGPT 유효한 모델인지 조회합니다.
-     *
-     * @param modelName
-     * @return
-     */
-    @GetMapping("/model")
-    public ResponseEntity<ApiResponse> isValidModel(@RequestParam(name = "modelName") String modelName) {
-        val result = chatGPTFacade.isValidModel(modelName);
-        return ResponseEntity.ok(ApiResponse.success(ResponseMessage.SUCCESS_VALID_MODEL.getMessage(), result));
-    }
-
-    /**
-     * [API] ChatGPT 모델 리스트를 조회합니다.
-     */
     @PostMapping("/prompt")
-    public ResponseEntity<ApiResponse> selectPrompt(@RequestBody CompletionRequestDto completionRequestDto) {
-        val result = chatGPTFacade.selectPrompt(completionRequestDto);
+    public ResponseEntity<ApiResponse> sendPrompt(@RequestBody CompletionRequestDto completionRequestDto) {
+        val result = chatGPTFacade.sendPrompt(completionRequestDto);
         return ResponseEntity.ok(ApiResponse.success(ResponseMessage.SUCCESS_POST_PROMPT.getMessage(), result));
     }
 }
