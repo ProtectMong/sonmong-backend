@@ -39,3 +39,11 @@ out/
 
 ### yml ###
 application-*.yml
+*-prod.yml
+*-dev.yml
+
+### env ###
+.env.*
+
+### .sh ###
+app_setup.sh
