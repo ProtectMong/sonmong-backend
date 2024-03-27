@@ -5,6 +5,7 @@ import poten012.sonmong.Poten403.domain.aiconsulting.domain.Curation;
 
 import java.util.List;
 
-public interface AiConsultingRepository extends JpaRepository<Curation, Long> {
+public interface CurationRepository extends JpaRepository<Curation, Long> {
+    Curation getCurationById(Long curationId);
     List<Curation> getCurationByUserId(Long userId);
 }

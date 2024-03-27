@@ -7,6 +7,7 @@ import lombok.val;
 import org.springframework.stereotype.Component;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.request.CurationRequestDto;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.AiConsultingMainResponseDto;
+import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.CurationDetailResponseDto;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.CurationResponseDto;
 import poten012.sonmong.Poten403.domain.aiconsulting.service.AiConsultingService;
 
@@ -25,5 +26,10 @@ public class AiConsultingFacade {
     public CurationResponseDto sendCuration(CurationRequestDto curationRequestDto) {
         val curationResult = aiConsultingService.sendCuration(curationRequestDto);
         return curationResult;
+    }
+
+    public CurationDetailResponseDto getCurationDetail(Long curationId) {
+        val curationDetailResult = aiConsultingService.getCurationDetail(curationId);
+        return curationDetailResult;
     }
 }

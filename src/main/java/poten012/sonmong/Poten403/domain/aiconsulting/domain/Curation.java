@@ -22,12 +22,16 @@ public class Curation extends TimeStamped {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "Curation_id")
+    @Column(name = "curation_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "answer_id")
+    private CurationAnswer curationAnswer;
 
     @Column(name = "birthday")
     private LocalDateTime birthday;

@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import poten012.sonmong.Poten403.common.message.ExceptionMessage;
 import poten012.sonmong.Poten403.domain.aiconsulting.domain.Curation;
+import poten012.sonmong.Poten403.domain.aiconsulting.domain.CurationAnswer;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.request.CurationRequestDto;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.AiConsultingMainResponseDto;
+import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.CurationDetailResponseDto;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.CurationResponseDto;
 import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.CurationResponseVo;
-import poten012.sonmong.Poten403.domain.aiconsulting.repository.AiConsultingRepository;
+import poten012.sonmong.Poten403.domain.aiconsulting.repository.CurationAnswerRepository;
+import poten012.sonmong.Poten403.domain.aiconsulting.repository.CurationRepository;
 import poten012.sonmong.Poten403.domain.chatgpt.service.ChatGPTService;
 import poten012.sonmong.Poten403.domain.user.domain.User;
 import poten012.sonmong.Poten403.domain.user.repository.UserRepository;
@@ -26,7 +29,8 @@ import java.util.*;
 @RequiredArgsConstructor
 public class AiConsultingServiceImpl implements AiConsultingService{
 
-    private final AiConsultingRepository aiConsultingRepository;
+    private final CurationRepository curationRepository;
+    private final CurationAnswerRepository curationAnswerRepository;
     private final UserRepository userRepository;
     private final ChatGPTService chatGPTService;
 
@@ -47,6 +51,7 @@ public class AiConsultingServiceImpl implements AiConsultingService{
         List<CurationResponseVo> answerList = new ArrayList<>();
 
         String[] sentences = chatGPTAnswer.split("\n");
+        List<String> curationAnswer = new ArrayList<>();
 
         for (int i = 0 ; i < sentences.length ; i++) {
             if (i%3==1 ) {
@@ -55,6 +60,7 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 title = sentences[i-1];
                 content = getContentFromSentence(sentences[i]);
                 CurationResponseVo curationResponseVo = CurationResponseVo.of(title, content);
+                curationAnswer.add(content);
                 answerList.add(curationResponseVo);
             }
         }
@@ -74,9 +80,34 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 .pastMedicalHistory(curationRequestDto.pastMedicalHistory())
                 .differentPastMedicalHistory(curationRequestDto.differentPastMedicalHistory())
                 .build();
-        aiConsultingRepository.save(curation);
+        curationRepository.save(curation);
+
+        String firstAnswer, secondAnswer, thirdAnswer, fourthAnswer;
+        firstAnswer = curationAnswer.get(0);
+        secondAnswer = curationAnswer.get(1);
+        thirdAnswer = curationAnswer.get(2);
+        fourthAnswer = curationAnswer.get(3);
+
+        val curationAnswerSave = CurationAnswer.builder()
+                .curation(curation)
+                .firstAnswer(firstAnswer)
+                .secondAnswer(secondAnswer)
+                .thirdAnswer(thirdAnswer)
+                .fourthAnswer(fourthAnswer)
+                .build();
+
+        curation.setCurationAnswer(curationAnswerSave);
+        curationAnswerRepository.save(curationAnswerSave);
 
         return CurationResponseDto.of(answerList);
+    }
+
+    @Override
+    public CurationDetailResponseDto getCurationDetail(Long curationId) {
+        Curation curation = findCuration(curationId);
+        User user = curation.getUser();
+        CurationAnswer curationAnswer = curation.getCurationAnswer();
+        return CurationDetailResponseDto.of(user, curation, curationAnswer);
     }
 
     private String createPrompt(CurationRequestDto curationRequestDto) {
@@ -102,33 +133,35 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 "의 정도로 아파." + String.valueOf(howLong) + "일 전부터 아팠고. \"" + curationRequestDto.howSick() +
                 "\" 이렇게 아파. 주로 " + curationRequestDto.whatActivities() + "할 때 더 심해져. " + PutStrainOnWrist +
                 PastMedicalHistory + DifferentPastMedicalHistory +
-                "아래 형식에 맞춰서 답변해줘" +
+                "아래 형식에 맞춰서 답변해줘\n" +
                 "1. 손목 부담의 원인\n" + "내용 : (너의 답변)\n" +
                 "2. 문제의 본질\n" + "내용 : (너의 답변)\n" +
                 "3. 일상 속 해결책\n" + "내용 : (너의 답변)\n" +
-                "4. 스트레칭 추천\n" + "내용 : (너의 답변)";
+                "4. 스트레칭 추천\n" + "내용 : (너의 답변)\n";
     }
 
-    private String getTitleFromSentence(String sentence) {
-        // 문장에서 숫자와 마침표를 제외한 부분을 key로 반환
-        String[] parts = sentence.split(" ", 2);
-        if (parts.length > 1) {
-            return parts[1].trim();
-        }
-        return "";
-    }
 
     private String getContentFromSentence(String sentence) {
         // 문장에서 "내용:" 이후의 내용을 추출하여 반환
-        int index = sentence.indexOf("내용:");
-        if (index == -1) {
-            return sentence.substring(index + 6).trim();
-        }
-        return "";
+        int index = sentence.indexOf(':');
+        return sentence.substring(index + 2).trim();
     }
 
     private User findUser(Long userId) {
         return Optional.ofNullable(userRepository.getUserById(userId))
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_USER.getMessage() + userId));
+    }
+
+    private Curation findCuration(Long curationId) {
+        return Optional.ofNullable(curationRepository.getCurationById(curationId))
+                .orElseThrow(() ->
+                        new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CURATION.getMessage() + curationId));
+    }
+
+    private CurationAnswer findCurationAnswer(Long curationAnswerId) {
+        return Optional.ofNullable(curationAnswerRepository.getCurationAnswerById(curationAnswerId))
+                .orElseThrow(() ->
+                        new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CURATION_ANSWER.getMessage()
+                                + curationAnswerId));
     }
 }

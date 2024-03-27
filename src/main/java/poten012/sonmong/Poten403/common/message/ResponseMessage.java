@@ -14,7 +14,8 @@ public enum ResponseMessage {
 
     /** aiConsulting **/
     SUCCESS_GET_MAIN("ai consulting 메인 조회를 성공했습니다."),
-    SUCCES_SEND_CURATION("큐레이션 전달을 성공했습니다.");
+    SUCCES_SEND_CURATION("큐레이션 전달을 성공했습니다."),
+    SUCCESS_GET_CURATION_DETAIL("큐레이션 상세 조회를 성공했습니다.");
 
 
     private final String message;

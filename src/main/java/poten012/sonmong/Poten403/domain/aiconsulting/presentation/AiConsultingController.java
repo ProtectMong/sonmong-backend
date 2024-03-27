@@ -27,4 +27,10 @@ public class AiConsultingController {
         val result = aiConsultingFacade.sendCuration(curationRequestDto);
         return ResponseEntity.ok(ApiResponse.success(ResponseMessage.SUCCES_SEND_CURATION.getMessage(), result));
     }
+
+    @GetMapping("/curation-detail")
+    public ResponseEntity<ApiResponse> getCurationDetail(@RequestParam Long curationId) {
+        val result = aiConsultingFacade.getCurationDetail(curationId);
+        return ResponseEntity.ok(ApiResponse.success(ResponseMessage.SUCCESS_GET_CURATION_DETAIL.getMessage(), result));
+    }
 }
