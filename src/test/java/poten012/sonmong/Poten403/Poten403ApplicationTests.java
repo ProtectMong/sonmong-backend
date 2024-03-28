@@ -1,4 +1,4 @@
-package com.example.Poten403;
+package poten012.sonmong.Poten403;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
