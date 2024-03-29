@@ -22,6 +22,12 @@ jobs:
         run: |
           cd ./src/main/resources
           echo "${{ secrets.APPLICATION_DEV_YML }}" > ./application.yml
+          echo "${{ secrets.DOCKER_COMPOSE_DEV_YML }}" > ./docker-compose.yml
+          echo "------------------TEST 1------------------"
+          cat ./application.yml
+          echo "------------------TEST 2------------------"
+          cat ./docker-compose.yml
+          echo "-----------------END TEST-----------------"
 
       - name: Grant permission for gradlew
         run: chmod +x ./gradlew
