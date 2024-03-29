@@ -47,3 +47,6 @@ application-*.yml
 
 ### .sh ###
 app_setup.sh
+
+### etc ###
+.DS_Store

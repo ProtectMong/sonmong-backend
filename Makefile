@@ -40,7 +40,7 @@ db:
 # 입력한 서비스의 로그 출력
 .PHONY: logs
 logs:
-	@docker compose ps -a 
+	@docker compose ps -a
 	@printf "[logs] 서비스 이름: "; \
 	read service; \
 	echo $(green)Executed: docker compose logs $$service $(default); \

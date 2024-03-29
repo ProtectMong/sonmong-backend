@@ -1,10 +1,7 @@
 package poten012.sonmong.Poten403.domain.user.domain;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import poten012.sonmong.Poten403.domain.aiconsulting.domain.Curation;
 
 import java.util.ArrayList;
@@ -14,10 +11,9 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 
 @Getter
-@Setter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "\"User\"")
-@NoArgsConstructor
 public class User {
 
     @Id
@@ -28,11 +24,16 @@ public class User {
     @Column(name = "user_name")
     private String name;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     List<Curation> curations = new ArrayList<>();
 
     @Builder
-    public User(String name) {
+    public User(Long userId, String name, String phoneNumber) {
+        this.id = userId;
         this.name = name;
+        this.phoneNumber = phoneNumber;
     }
 }
