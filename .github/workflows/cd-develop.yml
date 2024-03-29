@@ -22,6 +22,9 @@ jobs:
         run: |
           cd ./src/main/resources
           echo "${{ secrets.APPLICATION_DEV_YML }}" > ./application-dev.yml
+          cat ./application.yml
+          echo ""
+          cat ./application-dev.yml
 
       - name: Grant permission for gradlew
         run: chmod +x ./gradlew
@@ -52,6 +55,7 @@ jobs:
        script: |
          cd /home/sonmong-backend
          echo "${{ secrets.DOCKER_COMPOSE_DEV_YML }}" > ./docker-compose.yml
+         echo "${{ secrets.MAKEFILE }}" > ./Makefile
          echo "${{ secrets.DOCKER_PASSWORD }}" | sudo docker login --username ${{ secrets.DOCKER_USERNAME }} --password-stdin
          sudo docker compose stop app
          sudo docker compose down app

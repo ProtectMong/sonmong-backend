@@ -12,10 +12,10 @@ app:
 	@docker compose up -d app
 
 # db 컨테이너 생성 후, 실행
-.PHONY: db
-db:
-	@echo $(green)Executed: docker compose up -d db $(default)
-	@docker compose up -d db
+.PHONY: mysql_db
+mysql_db:
+	@echo $(green)Executed: docker compose up -d mysql_db $(default)
+	@docker compose up -d mysql_db
 
 ## docker-compose.yml를 통해 생성된 container, network, volume 제거
 #.PHONY: down
