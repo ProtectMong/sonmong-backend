@@ -99,7 +99,7 @@ public class AiConsultingServiceImpl implements AiConsultingService{
         curation.setCurationAnswer(curationAnswerSave);
         curationAnswerRepository.save(curationAnswerSave);
 
-        return CurationResponseDto.of(answerList);
+        return CurationResponseDto.of(user, curation, answerList);
     }
 
     @Override
