@@ -1,2 +1,2 @@
-# sonmong-backend
-손몽이 백엔드
+# Architecture
+![image](https://github.com/ProtectMong/sonmong-backend/assets/48791587/adf625c9-6cb4-44bf-97a4-baa6e030ff6b)
