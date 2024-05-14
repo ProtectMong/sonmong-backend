@@ -50,3 +50,5 @@ app_setup.sh
 
 ### etc ###
 .DS_Store
+/logs
+/data/certbot/*
