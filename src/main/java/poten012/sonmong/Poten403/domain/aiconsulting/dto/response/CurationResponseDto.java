@@ -10,12 +10,12 @@ import java.util.List;
 @Builder
 public record CurationResponseDto(
         String userName,
-        LocalDateTime birthday,
+        String birthday,
         String jobOrHobby,
         String whereDoesItHurt,
         String position,
         int levelOfPain,
-        LocalDateTime howLong,
+        String howLong,
         String whatActivities,
         boolean pastMedicalHistory,
         boolean differentPastMedicalHistory,

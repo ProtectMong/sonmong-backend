@@ -20,7 +20,9 @@ import poten012.sonmong.Poten403.domain.chatgpt.service.ChatGPTService;
 import poten012.sonmong.Poten403.domain.user.domain.User;
 import poten012.sonmong.Poten403.domain.user.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
 
@@ -43,8 +45,8 @@ public class AiConsultingServiceImpl implements AiConsultingService{
 
     @Override
     @Transactional
-    public CurationResponseDto sendCuration(CurationRequestDto curationRequestDto) {
-        User user = findUser(curationRequestDto.userId());
+    public CurationResponseDto sendCuration(Long userId, CurationRequestDto curationRequestDto) {
+        User user = findUser(userId);
         String prompt = createPrompt(curationRequestDto);
         String chatGPTAnswer = chatGPTService.sendMessage(prompt);
 
@@ -112,7 +114,10 @@ public class AiConsultingServiceImpl implements AiConsultingService{
 
     private String createPrompt(CurationRequestDto curationRequestDto) {
         String Gender, PutStrainOnWrist, PastMedicalHistory, DifferentPastMedicalHistory;
-        long howLong = ChronoUnit.DAYS.between(curationRequestDto.howLong(), LocalDateTime.now());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+        LocalDate howLongDate = LocalDate.parse(curationRequestDto.howLong(), formatter);
+        long howLong = ChronoUnit.DAYS.between(howLongDate, LocalDate.now());
 
         if (curationRequestDto.gender()) {Gender = "여자";}
         else {Gender = "남자";}

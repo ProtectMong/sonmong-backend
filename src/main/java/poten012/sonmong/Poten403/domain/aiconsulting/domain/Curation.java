@@ -34,7 +34,7 @@ public class Curation extends TimeStamped {
     private CurationAnswer curationAnswer;
 
     @Column(name = "birthday")
-    private LocalDateTime birthday;
+    private String birthday;
 
     @Column(name = "gender")
     private boolean gender; // true가 여자 false가 남자
@@ -52,7 +52,7 @@ public class Curation extends TimeStamped {
     private int levelOfPain; // 아픈 정도를 선택해 주세요.
 
     @Column(name = "how_log")
-    private LocalDateTime howLong; // 언제부터 아팠나요?
+    private String howLong; // 언제부터 아팠나요?
 
     @Column(name = "how_sick")
     private String howSick; // 어떻게 아프신가요?
@@ -71,8 +71,8 @@ public class Curation extends TimeStamped {
 
 
     @Builder
-    public Curation(User user, LocalDateTime birthday, boolean gender, String jobOrHobby, String whereDoesItHurt,
-                    String position, int levelOfPain, LocalDateTime howLong, String howSick, String whatActivities,
+    public Curation(User user, String birthday, boolean gender, String jobOrHobby, String whereDoesItHurt,
+                    String position, int levelOfPain, String howLong, String howSick, String whatActivities,
                     boolean putStrainOnWrist, boolean pastMedicalHistory, boolean differentPastMedicalHistory) {
         setUser(user);
         this.birthday = birthday;
