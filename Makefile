@@ -6,29 +6,23 @@ default = "\033[0m"
 all:
 
 # app 컨테이너 생성 후, 실행
-.PHONY: app
-app:
-	@echo $(green)Executed: docker compose up -d app $(default)
-	@docker compose up -d app
+.PHONY: up
+up:
+	@echo $(green)Executed: docker compose up -d ${container} $(default)
+	@docker compose up -d ${container}
 
-# db 컨테이너 생성 후, 실행
-.PHONY: mysql_db
-mysql_db:
-	@echo $(green)Executed: docker compose up -d mysql_db $(default)
-	@docker compose up -d mysql_db
+# docker-compose.yml를 통해 생성된 container, network, volume 제거
+.PHONY: down
+down:
+	@echo $(green)Executed: docker compose down ${container} $(default)
+	@docker compose down ${container}
 
-## docker-compose.yml를 통해 생성된 container, network, volume 제거
-#.PHONY: down
-#down:
-#	@echo $(green)Executed: docker compose down $(default)
-#	@docker compose down
-
-## docker-compose.yml를 통해 생성된 container, network, volume, image 제거
-## --rmi all: down 시, 생성된 이미지 제거
-#.PHONY: clean
-#clean:
-#	@echo $(green)Executed: docker compose down --rmi all $(default)
-#	@docker compose down --rmi all
+# docker-compose.yml를 통해 생성된 container, network, volume, image 제거
+# --rmi all: down 시, 생성된 이미지 제거
+.PHONY: clean
+clean:
+	@echo $(green)Executed: docker compose down ${container} --rmi all $(default)
+	@docker compose down ${container} --rmi all
 
 ## docker-compose.yml를 통해 생성된 container, network, image, 모든 익명 volume 제거
 ## prun -f: 모든 익명 볼륨 제거
