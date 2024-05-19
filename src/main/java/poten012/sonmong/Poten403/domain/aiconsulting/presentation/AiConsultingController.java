@@ -33,8 +33,10 @@ public class AiConsultingController {
     }
 
     @GetMapping("/curation-detail")
-    public ResponseEntity<ApiResponse> getCurationDetail(@RequestParam Long curationId) {
-        val result = aiConsultingFacade.getCurationDetail(curationId);
+    public ResponseEntity<ApiResponse> getCurationDetail(
+            @AuthenticationPrincipal CustomUserDetails customUserDetails,
+            @RequestParam Long curationId) {
+        val result = aiConsultingFacade.getCurationDetail(customUserDetails.getUserId(), curationId);
         return ResponseEntity.ok(ApiResponse.success(ResponseMessage.SUCCESS_GET_CURATION_DETAIL.getMessage(), result));
     }
 }
