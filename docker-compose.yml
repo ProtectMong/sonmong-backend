@@ -9,43 +9,43 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_ROOT_PASSWORD: root_prod_043poten012
-      MYSQL_DATABASE: sonmong_dev
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
       TZ: "Asia/Seoul"
 
-  app:
-    container_name: app
-    image: sonmong/server
-    ports:
-      - "8080:8080"
-    environment:
-      TZ: "Asia/Seoul"
+    app:
+      container_name: app
+      image: ${DOCKER_USERNAME}/${DOCKER_REPOSITORY}
+      ports:
+        - "8080:8080"
+      environment:
+        TZ: "Asia/Seoul"
 
-  nginx:
-    image: nginx
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - ./data/nginx/conf.d:/etc/nginx/conf.d
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-      - ./logs/nginx:/var/log/nginx/error.log
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
-    environment:
-      TZ: "Asia/Seoul"
+    nginx:
+      image: nginx
+      restart: unless-stopped
+      ports:
+        - "80:80"
+        - "443:443"
+      volumes:
+        - ./data/nginx/conf.d:/etc/nginx/conf.d
+        - ./data/certbot/conf:/etc/letsencrypt
+        - ./data/certbot/www:/var/www/certbot
+        - ./html:/usr/shared/nginx/html
+      command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+      environment:
+        TZ: "Asia/Seoul"
 
-  certbot:
-    image: certbot/certbot
-    restart: unless-stopped
-    volumes:
-      - ./logs/letsencrypt:/var/log/letsencrypt
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
-    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-    environment:
-      TZ: "Asia/Seoul"
+    certbot:
+      image: certbot/certbot
+      restart: unless-stopped
+      volumes:
+        - ./logs/letsencrypt:/var/log/letsencrypt
+        - ./data/certbot/conf:/etc/letsencrypt
+        - ./data/certbot/www:/var/www/certbot
+      entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+      environment:
+        TZ: "Asia/Seoul"
 
 volumes:
   db_data:
