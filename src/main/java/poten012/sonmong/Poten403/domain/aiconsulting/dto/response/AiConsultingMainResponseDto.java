@@ -24,12 +24,14 @@ public record AiConsultingMainResponseDto(
 
 @Builder
 record AiConsultingMainResponseVo(
+        Long curationId,
         int sequence,  // 몇 번째 curation인지를 나타내는 변수
         int levelOfPain,
         String createdAt
 ) {
     public static AiConsultingMainResponseVo of (int sequence, Curation curation) {
         return AiConsultingMainResponseVo.builder()
+                .curationId(curation.getId())
                 .sequence(sequence)
                 .levelOfPain(curation.getLevelOfPain())
                 .createdAt(curation.getCreatedAt().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))

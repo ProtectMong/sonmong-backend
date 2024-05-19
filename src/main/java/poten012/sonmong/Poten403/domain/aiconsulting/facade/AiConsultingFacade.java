@@ -28,8 +28,8 @@ public class AiConsultingFacade {
         return curationResult;
     }
 
-    public CurationDetailResponseDto getCurationDetail(Long curationId) {
-        val curationDetailResult = aiConsultingService.getCurationDetail(curationId);
+    public CurationDetailResponseDto getCurationDetail(Long userId, Long curationId) {
+        val curationDetailResult = aiConsultingService.getCurationDetail(userId, curationId);
         return curationDetailResult;
     }
 }
