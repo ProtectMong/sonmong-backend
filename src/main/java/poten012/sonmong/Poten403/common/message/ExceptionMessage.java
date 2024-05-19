@@ -11,7 +11,6 @@ public enum ExceptionMessage {
 
     /** curationException **/
     NOT_FOUND_CURATION("해당하는 큐레이션을 찾을 수 없습니다 : "),
-    NOT_CURATION_OF_USER("유저의 큐레이션이 아닙니다."),
 
     /** curationAnswerException **/
     NOT_FOUND_CURATION_ANSWER("해당하는 큐레이션 답변을 찾을 수 없습니다 : ");
