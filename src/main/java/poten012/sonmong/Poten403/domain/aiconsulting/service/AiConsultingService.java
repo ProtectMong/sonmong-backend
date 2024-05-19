@@ -8,5 +8,5 @@ import poten012.sonmong.Poten403.domain.aiconsulting.dto.response.CurationRespon
 public interface AiConsultingService {
     AiConsultingMainResponseDto getMain(Long userId);
     CurationResponseDto sendCuration(Long userId, CurationRequestDto curationRequestDto);
-    CurationDetailResponseDto getCurationDetail(Long userId, Long curationId);
+    CurationDetailResponseDto getCurationDetail(Long curationId);
 }

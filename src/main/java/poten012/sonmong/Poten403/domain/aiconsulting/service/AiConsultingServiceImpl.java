@@ -105,8 +105,8 @@ public class AiConsultingServiceImpl implements AiConsultingService{
     }
 
     @Override
-    public CurationDetailResponseDto getCurationDetail(Long userId, Long curationId) {
-        Curation curation = findCuration(userId, curationId);
+    public CurationDetailResponseDto getCurationDetail(Long curationId) {
+        Curation curation = findCuration(curationId);
         User user = curation.getUser();
         CurationAnswer curationAnswer = curation.getCurationAnswer();
         return CurationDetailResponseDto.of(user, curation, curationAnswer);
@@ -157,15 +157,10 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 .orElseThrow(() -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_USER.getMessage() + userId));
     }
 
-    private Curation findCuration(Long userId, Long curationId) {
-        Curation curation = Optional.ofNullable(curationRepository.getCurationById(curationId))
-                                .orElseThrow(() ->
-                                        new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CURATION.getMessage() + curationId));
-        if (!Objects.equals(curation.getUser().getId(), userId)) {
-            throw new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CURATION_ANSWER.getMessage() + curationId);
-        }
-
-        return curation;
+    private Curation findCuration(Long curationId) {
+        return Optional.ofNullable(curationRepository.getCurationById(curationId))
+                .orElseThrow(() ->
+                        new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CURATION.getMessage() + curationId));
     }
 
     private CurationAnswer findCurationAnswer(Long curationAnswerId) {
