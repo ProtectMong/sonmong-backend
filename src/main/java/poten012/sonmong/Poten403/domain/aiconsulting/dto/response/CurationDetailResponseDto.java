@@ -22,7 +22,8 @@ public record CurationDetailResponseDto(
         String firstAnswer,
         String secondAnswer,
         String thirdAnswer,
-        String fourthAnswer
+        String fourthAnswer,
+        String source
 ) {
     public static CurationDetailResponseDto of (User user, Curation curation, CurationAnswer curationAnswer) {
         return CurationDetailResponseDto.builder()
@@ -40,6 +41,7 @@ public record CurationDetailResponseDto(
                 .secondAnswer(curationAnswer.getSecondAnswer())
                 .thirdAnswer(curationAnswer.getThirdAnswer())
                 .fourthAnswer(curationAnswer.getFourthAnswer())
+                .source(curationAnswer.getSource())
                 .build();
     }
 }
