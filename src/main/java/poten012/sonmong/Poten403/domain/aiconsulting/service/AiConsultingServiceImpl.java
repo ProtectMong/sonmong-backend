@@ -84,11 +84,12 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 .build();
         curationRepository.save(curation);
 
-        String firstAnswer, secondAnswer, thirdAnswer, fourthAnswer;
+        String firstAnswer, secondAnswer, thirdAnswer, fourthAnswer, source;
         firstAnswer = curationAnswer.get(0);
         secondAnswer = curationAnswer.get(1);
         thirdAnswer = curationAnswer.get(2);
         fourthAnswer = curationAnswer.get(3);
+        source = curationAnswer.get(4);
 
         val curationAnswerSave = CurationAnswer.builder()
                 .curation(curation)
@@ -96,6 +97,7 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 .secondAnswer(secondAnswer)
                 .thirdAnswer(thirdAnswer)
                 .fourthAnswer(fourthAnswer)
+                .source(source)
                 .build();
 
         curation.setCurationAnswer(curationAnswerSave);
@@ -138,11 +140,12 @@ public class AiConsultingServiceImpl implements AiConsultingService{
                 "의 정도로 아파." + String.valueOf(howLong) + "일 전부터 아팠고. \"" + curationRequestDto.howSick() +
                 "\" 이렇게 아파. 주로 " + curationRequestDto.whatActivities() + "할 때 더 심해져. " + PutStrainOnWrist +
                 PastMedicalHistory + DifferentPastMedicalHistory +
-                "아래 형식에 맞춰서 답변해줘\n" +
-                "1. 손목 부담의 원인\n" + "내용 : (너의 답변)\n" +
-                "2. 문제의 본질\n" + "내용 : (너의 답변)\n" +
-                "3. 일상 속 해결책\n" + "내용 : (너의 답변)\n" +
-                "4. 스트레칭 추천\n" + "내용 : (너의 답변)\n";
+                "아래 형식에 맞춰서 자세하게 답변해줘 그리고 어떤 의학 논문을 참고 했는지와 해당 논문으로의 링크를 함께 작성해줘\n" +
+                "1. 손목 부담의 원인\n" + "내용 : 너의 답변(원인 하나만 자세하게 설명해줘)\n" +
+                "2. 문제의 본질\n" + "내용 : 너의 답변(본질 하나만 자세하게 설명해줘)\n" +
+                "3. 일상 속 해결책\n" + "내용 : 너의 답변(해결책 하나만 자세하게 설명해줘)\n" +
+                "4. 스트레칭 추천\n" + "내용 : 너의 답변(스트레칭 방법 하나만 줄넘김 없이 자세하게 설명해줘)\n" +
+                "5. 출처\n" + "내용 : (링크 주소만 알려줘)";
     }
 
 

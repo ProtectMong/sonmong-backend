@@ -35,7 +35,7 @@ public record CurationResponseDto(
                 .pastMedicalHistory(curation.isPastMedicalHistory())
                 .differentPastMedicalHistory(curation.isDifferentPastMedicalHistory())
                 .answerList(answerList)
-                .stretching("https://sonmongebucket.s3.ap-northeast-2.amazonaws.com/%EB%A7%88%EC%9A%B0%EC%8A%A4.gif")
+                .stretching("https://sonmongebucket.s3.ap-northeast-2.amazonaws.com/wristintrinsicmuscles.gif")
                 .build();
     }
 }
